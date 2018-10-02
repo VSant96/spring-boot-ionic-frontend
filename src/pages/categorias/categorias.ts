@@ -1,13 +1,10 @@
+import { CategoriaDTO } from './../../models/categoria.dto';
 import { CategoriaService } from './../../services/domain/categoria.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the CategoriasPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { API_CONFIG } from '../../config/api.config';
+import { normalizeURL } from 'ionic-angular';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @IonicPage()
 @Component({
@@ -16,17 +13,22 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class CategoriasPage {
 
+  items: CategoriaDTO[];
+  imgUrl : string = API_CONFIG.imgBaseUrl;
+  imgTrustedUrl : SafeResourceUrl;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public categoriaService : CategoriaService) {
+    public categoriaService : CategoriaService,
+    private sanitizer : DomSanitizer) {
     
   }
 
   ionViewDidLoad() {
     this.categoriaService.findAll()
-      .subscribe(response => {
-        console.log(response);
+      .subscribe(response => {       
+        this.items = response;
       },
       error =>  {
         console.log(error);
