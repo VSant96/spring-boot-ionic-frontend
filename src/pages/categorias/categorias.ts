@@ -15,13 +15,11 @@ export class CategoriasPage {
 
   items: CategoriaDTO[];
   imgUrl : string = API_CONFIG.imgBaseUrl;
-  imgTrustedUrl : SafeResourceUrl;
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public categoriaService : CategoriaService,
-    private sanitizer : DomSanitizer) {
+    public categoriaService : CategoriaService) {
     
   }
 
