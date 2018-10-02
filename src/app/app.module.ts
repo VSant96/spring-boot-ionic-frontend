@@ -9,6 +9,7 @@ import { MyApp } from './app.component';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ErrorInterceptorProvider } from '../interceptors/error.interceptor';
+import { AuthService } from '../services/authservice';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ErrorInterceptorProvider } from '../interceptors/error.interceptor';
     MyApp
   ],
   providers: [
+    AuthService,
     CategoriaService,
     ErrorInterceptorProvider,
     StatusBar,
