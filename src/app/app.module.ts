@@ -1,3 +1,4 @@
+import { ClienteService } from './../services/domain/cliente.service';
 import { CategoriaService } from './../services/domain/categoria.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http'
@@ -28,6 +29,7 @@ import { StorageService } from '../services/storage.service';
   providers: [
     AuthService,
     CategoriaService,
+    ClienteService,
     ErrorInterceptorProvider,
     StatusBar,
     StorageService,
