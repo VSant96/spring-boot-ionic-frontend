@@ -1,3 +1,4 @@
+import { API_CONFIG } from './../../config/api.config';
 import { ProdutoService } from './../../services/domain/produto.service';
 import { ProdutoDTO } from './../../models/produto.dto';
 import { Component } from '@angular/core';
@@ -23,7 +24,23 @@ export class ProdutosPage {
       .subscribe(response =>
       {
         this.items = response['content'];
+        this.loadImagesUrl();
       }, error => {});
+  }
+
+  loadImagesUrl()
+  {
+    for(var i = 0; i<this.items.length; ++i)
+    {
+      let item = this.items[i];
+      this.produtoService.getSmallImageFromLocalhost(item.id)
+        .subscribe(response => 
+          {
+            item.imageUrl = `${API_CONFIG.imgBaseUrl}/prod${item.id}-small.jpg`;
+            console.log(item.imageUrl);
+            
+          }, error => {})
+    }
   }
 
 }
