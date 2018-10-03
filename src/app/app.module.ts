@@ -1,3 +1,4 @@
+import { AuthInterceptorProvider } from './../interceptors/auth.interceptor';
 import { ClienteService } from './../services/domain/cliente.service';
 import { CategoriaService } from './../services/domain/categoria.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -30,6 +31,7 @@ import { StorageService } from '../services/storage.service';
     AuthService,
     CategoriaService,
     ClienteService,
+    AuthInterceptorProvider,
     ErrorInterceptorProvider,
     StatusBar,
     StorageService,
