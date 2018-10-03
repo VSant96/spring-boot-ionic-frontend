@@ -1,3 +1,4 @@
+import { CartService } from './../services/domain/cart.service';
 import { AuthInterceptorProvider } from './../interceptors/auth.interceptor';
 import { ClienteService } from './../services/domain/cliente.service';
 import { CategoriaService } from './../services/domain/categoria.service';
@@ -30,6 +31,7 @@ import { ProdutoService } from '../services/domain/produto.service';
   ],
   providers: [
     AuthService,
+    CartService,
     CategoriaService,
     ClienteService,
     AuthInterceptorProvider,
