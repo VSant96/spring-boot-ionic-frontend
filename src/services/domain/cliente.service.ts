@@ -35,4 +35,10 @@ export class ClienteService
                 responseType:'text'
             })
     }
+
+    findById(id: string)
+    {
+        return this.http.get(
+            `${API_CONFIG.baseUrl}/clientes/${id}`);
+    }
 }
