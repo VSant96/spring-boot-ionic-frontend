@@ -11,7 +11,8 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 })
 export class ProdutosPage {
 
-  items : ProdutoDTO[];
+  items : ProdutoDTO[] = [];
+  page : number = 0;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
@@ -27,27 +28,30 @@ export class ProdutosPage {
   {
     let categoria_id = this.navParams.get('categoria_id');
     let loader = this.presentLoadingDefault();
-    this.produtoService.findByCategoria(categoria_id)
+    this.produtoService.findByCategoria(categoria_id, this.page, 10)
       .subscribe(response =>
       {
-        this.items = response['content'];
+        let start = this.items.length;
+        this.items = this.items.concat(response['content']);
+        let end = this.items.length;
         loader.dismiss();
-        this.loadImagesUrl();
+        console.log(this.page);
+        console.log(this.items);
+        this.loadImagesUrl(start,end);
       }, error => {
         loader.dismiss();
       });
   }
 
-  loadImagesUrl()
+  loadImagesUrl(start:number,end:number)
   {
-    for(var i = 0; i<this.items.length; ++i)
+    for(var i = start; i<end; ++i)
     {
       let item = this.items[i];
       this.produtoService.getSmallImageFromLocalhost(item.id)
         .subscribe(response => 
           {
             item.imageUrl = `${API_CONFIG.imgBaseUrl}/prod${item.id}-small.jpg`;
-            console.log(item.imageUrl);
             
           }, error => {})
     }
@@ -69,8 +73,18 @@ export class ProdutosPage {
 
   doRefresh(refresher) {
     this.loadData();
+    this.page = 0;
+    this.items = [];
     setTimeout(() => {
       refresher.complete();
+    }, 1000);
+  }
+
+  doInfinite(infiniteScroll) {
+    this.page++;
+    this.loadData();
+    setTimeout(() => {
+      infiniteScroll.complete();
     }, 1000);
   }
 }
