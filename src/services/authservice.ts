@@ -1,3 +1,4 @@
+import { CartService } from './domain/cart.service';
 import { StorageService } from './storage.service';
 import { LocalUser } from './../models/local_user';
 import { API_CONFIG } from './../config/api.config';
@@ -12,7 +13,9 @@ export class AuthService
 
     jwtHelper: JwtHelper = new JwtHelper();
 
-    constructor(public http: HttpClient, public storage:StorageService)
+    constructor(public http: HttpClient,
+        public storage:StorageService,
+        public cartService: CartService)
     {
     }
     authenticate(creds : CredenciaisDTO)
@@ -36,6 +39,7 @@ export class AuthService
         };
 
         this.storage.setLocalUser(usr);
+        this.cartService.createOrClearCart();
     }
 
     logout()
