@@ -15,6 +15,7 @@ import { ErrorInterceptorProvider } from '../interceptors/error.interceptor';
 import { AuthService } from '../services/authservice';
 import { StorageService } from '../services/storage.service';
 import { ProdutoService } from '../services/domain/produto.service';
+import { ImageUtilService } from '../services/image-util.service';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ProdutoService } from '../services/domain/produto.service';
     ClienteService,
     AuthInterceptorProvider,
     ErrorInterceptorProvider,
+    ImageUtilService,
     ProdutoService,
     StatusBar,
     StorageService,
