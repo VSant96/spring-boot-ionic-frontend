@@ -5,6 +5,7 @@ import { StorageService } from './../../services/storage.service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { CameraOptions, Camera} from '@ionic-native/camera';
+import { ImageUtilService } from '../../services/image-util.service';
 
 @IonicPage()
 @Component({
@@ -21,6 +22,7 @@ export class ProfilePage {
      public navParams: NavParams,
      public storageService: StorageService,
      public clienteService: ClienteService,
+     public imageUtilService : ImageUtilService,
      public camera : Camera
      ) {
   }
@@ -56,7 +58,7 @@ export class ProfilePage {
   {
       this.clienteService.getImageFromLocalHost(this.cliente.id)
       .subscribe(response => {          
-          this.cliente.imageUrl = `${API_CONFIG.imgBaseUrl}/cp${this.cliente.id}.jpg`;
+          this.cliente.imageUrl = this.imageUtilService.getFileName(this.cliente.id,"cp","");
         },
        error => {})
        

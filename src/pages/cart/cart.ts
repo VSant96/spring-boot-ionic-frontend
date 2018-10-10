@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { API_CONFIG } from '../../config/api.config';
 import { CartService } from '../../services/domain/cart.service';
+import { ImageUtilService } from '../../services/image-util.service';
 
 @IonicPage()
 @Component({
@@ -19,7 +20,9 @@ export class CartPage {
   constructor(public navCtrl: NavController,
      public navParams: NavParams,
      public cartService : CartService,
-     public produtoService: ProdutoService) {
+     public produtoService: ProdutoService,
+     public imageUtilService : ImageUtilService) {
+       
   }
 
   ionViewDidLoad() {
@@ -36,7 +39,7 @@ export class CartPage {
       this.produtoService.getSmallImageFromLocalhost(item.produto.id)
         .subscribe(response => 
           {
-            item.produto.imageUrl = `${API_CONFIG.imgBaseUrl}/prod${item.produto.id}-small.jpg`;
+            item.produto.imageUrl = this.imageUtilService.getFileName(item.produto.id,"prod","small");
           }, error => {})
     }
   }

@@ -1,5 +1,5 @@
 export const API_CONFIG = {
-    baseUrl: "http://localhost:8080",
+    baseUrl: "http://192.168.0.3:8080",
 
     /*********************************************** 
      * Para usar este servidor é necessário criá-lo 
@@ -14,5 +14,8 @@ export const API_CONFIG = {
      *      armazenados os recursos que serão disponíbilizados pelo 
      *      servidor
     ***********************************************/
-    imgBaseUrl: "http://localhost:8081"
+    imgBaseUrl: "/imgapi",
+    imgBaseUrlCordova: "http://192.168.0.3:8081"
 }
+
+

@@ -1,3 +1,4 @@
+import { ImageUtilService } from './../../services/image-util.service';
 import { CategoriaDTO } from './../../models/categoria.dto';
 import { CategoriaService } from './../../services/domain/categoria.service';
 import { Component } from '@angular/core';
@@ -19,8 +20,8 @@ export class CategoriasPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public categoriaService : CategoriaService) {
-    
+    public categoriaService : CategoriaService,
+    public imageUtilService : ImageUtilService) {
   }
 
   ionViewDidLoad() {

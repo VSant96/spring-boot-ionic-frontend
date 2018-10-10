@@ -1,8 +1,11 @@
+import { ImageUtilService } from './../../services/image-util.service';
+import { StorageService } from './../../services/storage.service';
 import { API_CONFIG } from './../../config/api.config';
 import { ProdutoService } from './../../services/domain/produto.service';
 import { ProdutoDTO } from './../../models/produto.dto';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { Platform } from 'ionic-angular/platform/platform';
 
 @IonicPage()
 @Component({
@@ -10,14 +13,14 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
   templateUrl: 'produtos.html',
 })
 export class ProdutosPage {
-
   items : ProdutoDTO[] = [];
   page : number = 0;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public produtoService : ProdutoService,
-    public loadingCtrl : LoadingController) {
+    public loadingCtrl : LoadingController,
+    private imageUtilService : ImageUtilService) {
   }
 
   ionViewDidLoad() {
@@ -35,8 +38,6 @@ export class ProdutosPage {
         this.items = this.items.concat(response['content']);
         let end = this.items.length;
         loader.dismiss();
-        console.log(this.page);
-        console.log(this.items);
         this.loadImagesUrl(start,end);
       }, error => {
         loader.dismiss();
@@ -51,7 +52,7 @@ export class ProdutosPage {
       this.produtoService.getSmallImageFromLocalhost(item.id)
         .subscribe(response => 
           {
-            item.imageUrl = `${API_CONFIG.imgBaseUrl}/prod${item.id}-small.jpg`;
+            item.imageUrl = this.imageUtilService.getFileName(item.id,"prod","small");
             
           }, error => {})
     }
