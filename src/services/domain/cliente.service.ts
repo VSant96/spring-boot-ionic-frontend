@@ -24,7 +24,7 @@ export class ClienteService
 
     getImageFromLocalHost(id : string) : Observable<any>
     {
-        let url = `${API_CONFIG.imgBaseUrl}/cp${id}.jpg`
+        let url = this.imageUtilService.getFileName(id,"cp","");
         return this.http.get(url, {responseType : 'blob'});
     }
 

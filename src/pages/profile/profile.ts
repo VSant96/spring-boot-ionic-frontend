@@ -1,4 +1,4 @@
-import { API_CONFIG } from './../../config/api.config';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ClienteService } from './../../services/domain/cliente.service';
 import { ClienteDTO } from './../../models/cliente.dto';
 import { StorageService } from './../../services/storage.service';
@@ -16,6 +16,7 @@ export class ProfilePage {
 
   cliente : ClienteDTO;
   picture : string;
+  profileImage;
   cameraOn : boolean = false;
 
   constructor(public navCtrl: NavController,
@@ -23,8 +24,10 @@ export class ProfilePage {
      public storageService: StorageService,
      public clienteService: ClienteService,
      public imageUtilService : ImageUtilService,
-     public camera : Camera
+     public camera : Camera,
+     public sanitizer: DomSanitizer
      ) {
+      this.profileImage = 'assets/imgs/avatar-blank.png';
   }
 
   ionViewDidLoad() {
@@ -59,9 +62,25 @@ export class ProfilePage {
       this.clienteService.getImageFromLocalHost(this.cliente.id)
       .subscribe(response => {          
           this.cliente.imageUrl = this.imageUtilService.getFileName(this.cliente.id,"cp","");
+          this.blobToDataURL(response).then(dataUrl => {
+            let str : string = dataUrl as string;
+            this.profileImage = this.sanitizer.bypassSecurityTrustResourceUrl(str);
+          });
         },
-       error => {})
+       error => {
+          this.profileImage = 'assets/imgs/avatar-blank.png';
+       })
        
+  }
+
+ // https://gist.github.com/frumbert/3bf7a68ffa2ba59061bdcfc016add9ee
+  blobToDataURL(blob) {
+  return new Promise((fulfill, reject) => {
+      let reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = (e) => fulfill(reader.result);
+      reader.readAsDataURL(blob);
+    })
   }
 
   getCameraPicture()
@@ -69,15 +88,13 @@ export class ProfilePage {
     this.cameraOn = true;
     const options: CameraOptions = {
       quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.PNG,
       mediaType: this.camera.MediaType.PICTURE
     }
     
     this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      this.picture = 'data:image/jpeg;base64,' + imageData;
+      this.picture = 'data:image/png;base64,' + imageData;
       this.cameraOn = false;
     }, (err) => {
       this.cameraOn = false;
@@ -90,15 +107,13 @@ export class ProfilePage {
     const options: CameraOptions = {
       quality: 100,
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.PNG,
       mediaType: this.camera.MediaType.PICTURE
     }
     
     this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      this.picture = 'data:image/jpeg;base64,' + imageData;
+      this.picture = 'data:image/png;base64,' + imageData;
       this.cameraOn = false;
     }, (err) => {
       this.cameraOn = false;
@@ -111,7 +126,7 @@ export class ProfilePage {
       .subscribe(response => 
         {
           this.picture = null;
-          this.loadData();
+          this.getImageIfExists();
         }, error => {})
   }
 
